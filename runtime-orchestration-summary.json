@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "skillProvenance": {
+    "name": "solo-design",
+    "version": "2026.08.06.19.15.08",
+    "version_source": "skill-release-manifest.json",
+    "schema_version": "1.0",
+    "release": "prompt-base-cloud-ssot-migration",
+    "read_status": "present"
+  },
+  "project": {
+    "resolvedLane": "library_bound",
+    "intentProfile": "saas-enterprise-landing",
+    "selectedIntentWorkflowRead": true,
+    "contextRequirementsLoaded": [
+      "shared-runtime/runtime-boundaries/lane-runtime-contracts.md",
+      "shared-runtime/agent-dispatch-runtime/lane-dispatch-index.md",
+      "delivery-quality/page-rendering-quality-gate.md",
+      "delivery-quality/design-artifact-validation.md",
+      "delivery-quality/delivery-evidence-contract.md",
+      "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+      "intent-workflows/intent-page-library-bound/design-library-ingestion.md",
+      "intent-workflows/intent-page-library-bound/design-token-fidelity-rules.md",
+      "intent-workflows/intent-page-library-bound/component-conformance-rules.md",
+      "intent-workflows/intent-page-library-bound/icon-source-priority-rules.md",
+      "shared-runtime/design-artifact-formats/design-project-file-format.md",
+      "shared-runtime/orchestration-summary-contract/orchestration-summary-contract.md"
+    ],
+    "contextReadScope": "library-bound-saas-landing",
+    "deviceType": "desktop",
+    "generationTree": {
+      "nodes": [
+        {
+          "id": "page-index",
+          "htmlSrc": "pages/index.html",
+          "type": "leaf",
+          "sharedFragments": []
+        }
+      ]
+    },
+    "dispatchPreflightManifest": [
+      {
+        "nodeId": "page-index",
+        "htmlSrc": "pages/index.html",
+        "laneContract": "library_bound",
+        "sharedTemplate": null,
+        "supplementaryReads": [
+          "assets/icons/dl_builtin_apple/"
+        ],
+        "allowedWritePaths": [
+          "pages/index.html"
+        ],
+        "forbiddenWriteRoots": [
+          ".design",
+          "runtime-orchestration-summary.json",
+          "validation-report.json",
+          "colors_and_type.css"
+        ]
+      }
+    ],
+    "expectedDispatches": [
+      {
+        "nodeId": "page-index",
+        "packetType": "library-bound-page",
+        "status": "not_required"
+      }
+    ],
+    "validationRunDiscipline": "main-agent-only",
+    "validationHistory": [],
+    "validationRepairLedger": [],
+    "validationSnapshot": {},
+    "artifactReadinessEvidence": {},
+    "lowValueCallWatchdog": {
+      "stopAction": "halt-and-report",
+      "maxConsecutiveNoProgress": 3,
+      "currentStreak": 0
+    },
+    "sourceAuthorityLock": {
+      "authority": "design-library",
+      "libraryId": "dl_builtin_apple"
+    },
+    "visualQualityCheckpoints": []
+  },
+  "designSource": {
+    "operatingMode": "library-bound",
+    "libraryIdentity": {
+      "name": "苹果",
+      "id": "dl_builtin_apple",
+      "version": null,
+      "scope": "built-in-global",
+      "path": "c:\\Users\\搁浅\\.trae-cn\\design_libraries\\dl_builtin_apple",
+      "versionSource": "metadata.json"
+    },
+    "actualTokenNameReference": [
+      "--brand-500",
+      "--background",
+      "--foreground",
+      "--card",
+      "--card-foreground",
+      "--primary",
+      "--primary-foreground",
+      "--secondary",
+      "--secondary-foreground",
+      "--muted",
+      "--muted-foreground",
+      "--accent",
+      "--accent-foreground",
+      "--border",
+      "--ring",
+      "--radius",
+      "--radius-sm",
+      "--radius-md",
+      "--radius-lg",
+      "--font-sans",
+      "--tracking-normal",
+      "--shadow-sm",
+      "--shadow-md",
+      "--shadow-lg",
+      "--spacing",
+      "--icon",
+      "--icon-muted"
+    ],
+    "componentPlan": [
+      "navigation",
+      "card",
+      "button",
+      "comparison-table",
+      "product-grid"
+    ],
+    "tokenFidelity": "strict",
+    "iconSource": "library-icons"
+  },
+  "pages": [
+    {
+      "nodeId": "page-index",
+      "htmlSrc": "pages/index.html",
+      "title": "Lumina · 智能工作平台",
+      "componentsUsed": [
+        "navigation",
+        "card",
+        "button",
+        "comparison-table"
+      ],
+      "tokensUsed": [
+        "--brand-500",
+        "--background",
+        "--foreground",
+        "--card",
+        "--primary",
+        "--secondary",
+        "--muted-foreground",
+        "--border",
+        "--radius",
+        "--font-sans",
+        "--shadow-md",
+        "--spacing"
+      ],
+      "iconsUsed": [
+        "assets/icons/dl_builtin_apple/"
+      ]
+    }
+  ]
+}

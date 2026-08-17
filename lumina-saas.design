@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "id": "page-index",
+      "title": "Lumina · 智能工作平台",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1786956673000,
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 4493,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-25d34c9d",
+          "measuredAt": 1786957095958
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/index.html",
+        "interactions": []
+      }
+    }
+  ],
+  "config": {
+    "autoLayout": true,
+    "deviceType": "desktop",
+    "projectName": "Lumina · 智能工作平台",
+    "designLibrary": {
+      "name": "苹果",
+      "id": "dl_builtin_apple",
+      "version": null,
+      "scope": "built-in-global",
+      "path": "c:\\Users\\搁浅\\.trae-cn\\design_libraries\\dl_builtin_apple",
+      "versionSource": "metadata.json"
+    }
+  }
+}
