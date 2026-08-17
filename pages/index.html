@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina · 智能工作平台</title>
+    <style id="theme-vars">
+/*
+ * Pinguo design tokens
+ * Brand: Pinguo
+ * Domain: Consumer imaging product
+ * Style: Restrained, elegant, Apple-inspired
+ * Theme mode: light-dark
+ * Source language: zh
+ * Output language: en
+ *
+ * Color architecture (two layers):
+ *   1. Primitive palette - six categories. brand / background / text / icon
+ *      are each a 10-step scale (50 lightest to 900 darkest). state-success and
+ *      state-error are functional colors anchored on Apple system colors.
+ *      Anchors follow Apple Human Interface Guidelines system colors
+ *      (System Blue #007AFF, System Green #34C759, System Red #FF3B30,
+ *      system grays / label / background colors).
+ *   2. Semantic tokens - :root (light) and .dark map roles onto primitives.
+ *      Components and UI kits must only consume the semantic tokens below.
+ */
+
+/* @group-priority: brand, background, text, icon, state-success, state-error */
+
+:root {
+  /* ===== PRIMITIVE PALETTE ===== */
+
+  /* brand */
+  --brand-50: #e8f2ff;
+  --brand-100: #cfe5ff;
+  --brand-200: #9fcbff;
+  --brand-300: #66abff;
+  --brand-400: #2e8dff;
+  --brand-500: #007aff; /* @primary */
+  --brand-600: #0064d6;
+  --brand-700: #004fad;
+  --brand-800: #003b82;
+  --brand-900: #00275a;
+
+  /* background */
+  --background-50: #ffffff;
+  --background-100: #f7f7fa;
+  --background-200: #f2f2f7;
+  --background-300: #e5e5ea;
+  --background-400: #d1d1d6;
+  --background-500: #aeaeb2;
+  --background-600: #8e8e93;
+  --background-700: #3a3a3c;
+  --background-800: #1c1c1e;
+  --background-900: #000000;
+
+  /* text */
+  --text-50: #f5f5f7;
+  --text-100: #e3e3e8;
+  --text-200: #c7c7cc;
+  --text-300: #aeaeb2;
+  --text-400: #8e8e93;
+  --text-500: #6e6e73;
+  --text-600: #48484a;
+  --text-700: #3c3c43;
+  --text-800: #1d1d1f;
+  --text-900: #000000;
+
+  /* icon */
+  --icon-50: #f5f5f7;
+  --icon-100: #e5e5ea;
+  --icon-200: #d1d1d6;
+  --icon-300: #c7c7cc;
+  --icon-400: #aeaeb2;
+  --icon-500: #8e8e93;
+  --icon-600: #6e6e73;
+  --icon-700: #48484a;
+  --icon-800: #2c2c2e;
+  --icon-900: #1d1d1f;
+
+  /* state-success */
+  --state-success: #34c759; /* @primary */
+  --state-success-dark: #30d158;
+  --state-success-surface: #e9f9ee;
+  --state-success-foreground: #ffffff;
+
+  /* state-error */
+  --state-error: #ff3b30; /* @primary */
+  --state-error-dark: #ff453a;
+  --state-error-surface: #ffecea;
+  --state-error-foreground: #ffffff;
+
+  /* ===== SEMANTIC ROLES ===== */
+
+  /* semantic */
+  --background: var(--background-50);
+  --foreground: var(--text-800);
+  --card: var(--background-50);
+  --card-foreground: var(--text-800);
+  --popover: var(--background-50);
+  --popover-foreground: var(--text-900);
+
+  --primary: var(--brand-500);
+  --primary-foreground: var(--background-50);
+  --secondary: var(--background-200);
+  --secondary-foreground: var(--text-800);
+  --muted: var(--background-200);
+  --muted-foreground: var(--text-400);
+  --accent: var(--background-100);
+  --accent-foreground: var(--text-800);
+  --destructive: var(--state-error);
+  --destructive-foreground: var(--state-error-foreground);
+  --success: var(--state-success);
+  --success-foreground: var(--state-success-foreground);
+  --border: var(--background-300);
+  --input: var(--background-400);
+  --ring: var(--brand-500);
+
+  --icon: var(--icon-900);
+  --icon-muted: var(--icon-500);
+
+  /* chart */
+  --chart-1: var(--state-success);
+  --chart-2: var(--brand-500);
+  --chart-3: #ff9500;
+  --chart-4: #5856d6;
+  --chart-5: #af52de;
+
+  /* sidebar */
+  --sidebar: var(--background-200);
+  --sidebar-foreground: var(--text-800);
+  --sidebar-primary: var(--brand-500);
+  --sidebar-primary-foreground: var(--background-50);
+  --sidebar-accent: var(--background-300);
+  --sidebar-accent-foreground: var(--text-800);
+  --sidebar-border: var(--background-300);
+  --sidebar-ring: var(--brand-500);
+
+  /* TYPOGRAPHY */
+  --font-sans: DM Sans, ui-sans-serif, sans-serif, system-ui;
+  --font-serif: DM Sans, ui-sans-serif, sans-serif, system-ui;
+  --font-mono: JetBrains Mono, monospace;
+  --tracking-normal: 0em;
+
+  /* RADIUS */
+  --radius: 1.2rem;
+
+  /* SHADOWS */
+  --shadow-2xs: 0 1px 2px -1px rgba(0, 0, 0, 0.04); /* Hairline */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.04); /* Subtle */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 1px 3px -1px rgba(0, 0, 0, 0.05); /* Card */
+  --shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.05); /* Raised */
+  --shadow-md: 0 4px 8px -2px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.05); /* Card Hover */
+  --shadow-lg: 0 8px 24px -8px rgba(0, 0, 0, 0.08), 0 4px 8px -4px rgba(0, 0, 0, 0.05); /* Float */
+  --shadow-xl: 0 16px 40px -10px rgba(0, 0, 0, 0.10), 0 8px 16px -8px rgba(0, 0, 0, 0.06); /* Overlay */
+  --shadow-2xl: 0 24px 64px -12px rgba(0, 0, 0, 0.12); /* Modal */
+
+  /* SPACING */
+  --spacing: 0.24rem;
+}
+
+/* ===== SEMANTIC ROLES - dark (primitive palette inherited) ===== */
+.dark {
+  --background: var(--background-900);
+  --foreground: var(--text-50);
+  --card: var(--background-800);
+  --card-foreground: var(--text-50);
+  --popover: var(--background-700);
+  --popover-foreground: var(--text-50);
+
+  --primary: var(--brand-400);
+  --primary-foreground: var(--background-900);
+  --secondary: var(--background-800);
+  --secondary-foreground: var(--text-50);
+  --muted: var(--background-800);
+  --muted-foreground: var(--text-400);
+  --accent: var(--background-700);
+  --accent-foreground: var(--text-50);
+  --destructive: var(--state-error-dark);
+  --destructive-foreground: var(--state-error-foreground);
+  --success: var(--state-success-dark);
+  --success-foreground: var(--state-success-foreground);
+  --border: var(--background-700);
+  --input: var(--background-700);
+  --ring: var(--brand-400);
+
+  --icon: var(--icon-50);
+  --icon-muted: var(--icon-500);
+
+  --chart-1: var(--state-success-dark);
+  --chart-2: var(--brand-400);
+  --chart-3: #ff9f0a;
+  --chart-4: #5e5ce6;
+  --chart-5: #bf5af2;
+
+  --sidebar: var(--background-800);
+  --sidebar-foreground: var(--text-50);
+  --sidebar-primary: var(--brand-400);
+  --sidebar-primary-foreground: var(--background-900);
+  --sidebar-accent: var(--background-700);
+  --sidebar-accent-foreground: var(--text-50);
+  --sidebar-border: var(--background-700);
+  --sidebar-ring: var(--brand-400);
+
+  --shadow-2xs: 0 1px 2px -1px rgba(0, 0, 0, 0.30);
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.30);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.36), 0 1px 3px -1px rgba(0, 0, 0, 0.36);
+  --shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.40), 0 1px 2px -1px rgba(0, 0, 0, 0.36);
+  --shadow-md: 0 4px 8px -2px rgba(0, 0, 0, 0.44), 0 2px 4px -2px rgba(0, 0, 0, 0.36);
+  --shadow-lg: 0 8px 24px -8px rgba(0, 0, 0, 0.50), 0 4px 8px -4px rgba(0, 0, 0, 0.40);
+  --shadow-xl: 0 16px 40px -10px rgba(0, 0, 0, 0.55), 0 8px 16px -8px rgba(0, 0, 0, 0.44);
+  --shadow-2xl: 0 24px 64px -12px rgba(0, 0, 0, 0.60);
+}
+
+:root { --radius-sm: 0.5rem; --radius-md: 0.75rem; --radius-lg: var(--radius); --radius-xl: 1.5rem; --radius-2xl: 2rem; }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --radius-sm: var(--radius-sm);
+    --radius-md: var(--radius-md);
+    --radius-lg: var(--radius-lg);
+    --radius-xl: var(--radius-xl);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-secondary { background-color: var(--secondary); }
+      .text-secondary { color: var(--secondary); }
+      .border-secondary { border-color: var(--secondary); }
+      .ring-secondary { --tw-ring-color: var(--secondary); }
+      .bg-secondary-foreground { background-color: var(--secondary-foreground); }
+      .text-secondary-foreground { color: var(--secondary-foreground); }
+      .border-secondary-foreground { border-color: var(--secondary-foreground); }
+      .ring-secondary-foreground { --tw-ring-color: var(--secondary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-accent { background-color: var(--accent); }
+      .text-accent { color: var(--accent); }
+      .border-accent { border-color: var(--accent); }
+      .ring-accent { --tw-ring-color: var(--accent); }
+      .bg-accent-foreground { background-color: var(--accent-foreground); }
+      .text-accent-foreground { color: var(--accent-foreground); }
+      .border-accent-foreground { border-color: var(--accent-foreground); }
+      .ring-accent-foreground { --tw-ring-color: var(--accent-foreground); }
+      .bg-destructive { background-color: var(--destructive); }
+      .text-destructive { color: var(--destructive); }
+      .border-destructive { border-color: var(--destructive); }
+      .ring-destructive { --tw-ring-color: var(--destructive); }
+      .bg-destructive-foreground { background-color: var(--destructive-foreground); }
+      .text-destructive-foreground { color: var(--destructive-foreground); }
+      .border-destructive-foreground { border-color: var(--destructive-foreground); }
+      .ring-destructive-foreground { --tw-ring-color: var(--destructive-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+      .bg-chart-1 { background-color: var(--chart-1); }
+      .text-chart-1 { color: var(--chart-1); }
+      .border-chart-1 { border-color: var(--chart-1); }
+      .ring-chart-1 { --tw-ring-color: var(--chart-1); }
+      .bg-chart-2 { background-color: var(--chart-2); }
+      .text-chart-2 { color: var(--chart-2); }
+      .border-chart-2 { border-color: var(--chart-2); }
+      .ring-chart-2 { --tw-ring-color: var(--chart-2); }
+      .bg-chart-3 { background-color: var(--chart-3); }
+      .text-chart-3 { color: var(--chart-3); }
+      .border-chart-3 { border-color: var(--chart-3); }
+      .ring-chart-3 { --tw-ring-color: var(--chart-3); }
+      .bg-chart-4 { background-color: var(--chart-4); }
+      .text-chart-4 { color: var(--chart-4); }
+      .border-chart-4 { border-color: var(--chart-4); }
+      .ring-chart-4 { --tw-ring-color: var(--chart-4); }
+      .bg-chart-5 { background-color: var(--chart-5); }
+      .text-chart-5 { color: var(--chart-5); }
+      .border-chart-5 { border-color: var(--chart-5); }
+      .ring-chart-5 { --tw-ring-color: var(--chart-5); }
+      .bg-sidebar { background-color: var(--sidebar); }
+      .text-sidebar { color: var(--sidebar); }
+      .border-sidebar { border-color: var(--sidebar); }
+      .ring-sidebar { --tw-ring-color: var(--sidebar); }
+      .bg-sidebar-foreground { background-color: var(--sidebar-foreground); }
+      .text-sidebar-foreground { color: var(--sidebar-foreground); }
+      .border-sidebar-foreground { border-color: var(--sidebar-foreground); }
+      .ring-sidebar-foreground { --tw-ring-color: var(--sidebar-foreground); }
+      .bg-sidebar-primary { background-color: var(--sidebar-primary); }
+      .text-sidebar-primary { color: var(--sidebar-primary); }
+      .border-sidebar-primary { border-color: var(--sidebar-primary); }
+      .ring-sidebar-primary { --tw-ring-color: var(--sidebar-primary); }
+      .bg-sidebar-primary-foreground { background-color: var(--sidebar-primary-foreground); }
+      .text-sidebar-primary-foreground { color: var(--sidebar-primary-foreground); }
+      .border-sidebar-primary-foreground { border-color: var(--sidebar-primary-foreground); }
+      .ring-sidebar-primary-foreground { --tw-ring-color: var(--sidebar-primary-foreground); }
+      .bg-sidebar-accent { background-color: var(--sidebar-accent); }
+      .text-sidebar-accent { color: var(--sidebar-accent); }
+      .border-sidebar-accent { border-color: var(--sidebar-accent); }
+      .ring-sidebar-accent { --tw-ring-color: var(--sidebar-accent); }
+      .bg-sidebar-accent-foreground { background-color: var(--sidebar-accent-foreground); }
+      .text-sidebar-accent-foreground { color: var(--sidebar-accent-foreground); }
+      .border-sidebar-accent-foreground { border-color: var(--sidebar-accent-foreground); }
+      .ring-sidebar-accent-foreground { --tw-ring-color: var(--sidebar-accent-foreground); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <main>
+      <style>
+        /* ===== Base layout ===== */
+        .luma-container { max-width: 80rem; margin-left: auto; margin-right: auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+        .luma-section { padding-top: 6rem; padding-bottom: 6rem; }
+        @media (min-width: 768px) { .luma-section { padding-top: 7.5rem; padding-bottom: 7.5rem; } }
+
+        /* ===== Navigation ===== */
+        .luma-nav {
+          position: sticky; top: 0; z-index: 50;
+          height: 44px;
+          background: color-mix(in srgb, var(--sidebar) 82%, transparent);
+          backdrop-filter: saturate(180%) blur(20px);
+          -webkit-backdrop-filter: saturate(180%) blur(20px);
+          border-bottom: 1px solid var(--border);
+        }
+        .luma-nav-inner { height: 44px; display: flex; align-items: center; justify-content: space-between; gap: calc(var(--spacing)*4); }
+        .luma-brand-text { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--foreground); }
+        .luma-nav-links { display: none; align-items: center; gap: calc(var(--spacing)*1); }
+        @media (min-width: 768px) { .luma-nav-links { display: flex; } }
+        .luma-nav-link {
+          display: inline-flex; align-items: center; height: 32px;
+          padding: 0 calc(var(--spacing)*2.5);
+          border-radius: 999px;
+          font-size: 13px; font-weight: 500; color: var(--foreground);
+          transition: background .18s ease, color .18s ease;
+        }
+        .luma-nav-link:hover { background: var(--secondary); }
+        .luma-nav-link:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+        .luma-nav-actions { display: flex; align-items: center; gap: calc(var(--spacing)*2); }
+
+        /* ===== Buttons ===== */
+        .luma-btn {
+          display: inline-flex; align-items: center; justify-content: center; gap: calc(var(--spacing)*1.5);
+          border: none; cursor: pointer; font-family: var(--font-sans);
+          transition: all .18s ease; white-space: nowrap;
+        }
+        .luma-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+        .luma-btn:disabled { opacity: .42; }
+        .luma-btn-primary {
+          background: var(--primary); color: var(--primary-foreground);
+          height: 40px; padding: 0 20px;
+          border-radius: calc(var(--radius)*2);
+          font-size: 14px; font-weight: 600;
+          box-shadow: var(--shadow-sm);
+        }
+        .luma-btn-primary:hover { filter: brightness(.96); }
+        .luma-btn-primary-lg {
+          background: var(--primary); color: var(--primary-foreground);
+          height: 56px; padding: 0 28px;
+          border-radius: calc(var(--radius)*2);
+          font-size: 16px; font-weight: 600;
+          box-shadow: var(--shadow-sm);
+        }
+        .luma-btn-primary-lg:hover { filter: brightness(.96); }
+        .luma-btn-secondary {
+          background: var(--secondary); color: var(--secondary-foreground);
+          height: 48px; padding: 0 24px;
+          border-radius: calc(var(--radius)*2);
+          font-size: 15px; font-weight: 600;
+        }
+        .luma-btn-secondary:hover { background: var(--background-300); }
+        .luma-btn-text {
+          background: transparent; color: var(--foreground);
+          height: 48px; padding: 0 4px;
+          font-size: 15px; font-weight: 500;
+          box-shadow: none;
+        }
+        .luma-btn-text:hover { color: var(--primary); }
+        .luma-btn-sm {
+          background: var(--primary); color: var(--primary-foreground);
+          height: 40px; padding: 0 20px;
+          border-radius: calc(var(--radius)*2);
+          font-size: 14px; font-weight: 600;
+          box-shadow: var(--shadow-sm);
+        }
+        .luma-btn-sm:hover { filter: brightness(.96); }
+
+        /* ===== Eyebrow / Section header ===== */
+        .luma-eyebrow {
+          display: inline-block;
+          color: var(--muted-foreground);
+          font-size: 12px; font-weight: 600;
+          letter-spacing: .08em; text-transform: uppercase;
+        }
+        .luma-h2 {
+          font-size: clamp(2rem, 4vw, 2.75rem);
+          font-weight: 700; line-height: 1.1;
+          color: var(--foreground); letter-spacing: -.02em;
+        }
+        .luma-subtitle {
+          font-size: 18px; line-height: 1.5;
+          color: var(--muted-foreground);
+        }
+
+        /* ===== Cards ===== */
+        .luma-card {
+          background: var(--card); color: var(--card-foreground);
+          border: 1px solid var(--border);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow-sm);
+          padding: calc(var(--spacing)*5);
+          transition: transform .18s ease, box-shadow .18s ease;
+        }
+        .luma-card-hover:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .luma-icon-tile {
+          display: inline-flex; align-items: center; justify-content: center;
+          width: 48px; height: 48px;
+          border-radius: var(--radius-md);
+          background: var(--accent); color: var(--primary);
+          margin-bottom: calc(var(--spacing)*4);
+        }
+
+        /* ===== Comparison table ===== */
+        .luma-compare {
+          border: 1px solid var(--border);
+          border-radius: var(--radius);
+          background: var(--card);
+          box-shadow: var(--shadow-sm);
+          overflow: hidden;
+        }
+        .luma-compare-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; }
+        .luma-compare-cell {
+          padding: calc(var(--spacing)*4) calc(var(--spacing)*3.5);
+          border-bottom: 1px solid var(--border);
+          border-right: 1px solid var(--border);
+          display: flex; flex-direction: column; justify-content: center; gap: calc(var(--spacing)*1.5);
+        }
+        .luma-compare-cell:nth-child(4n) { border-right: none; }
+        .luma-compare-row-header .luma-compare-cell { background: var(--background); }
+        .luma-compare-metric {
+          font-family: var(--font-mono);
+          color: var(--muted-foreground);
+          font-size: 10px; font-weight: 700;
+          letter-spacing: .12em; text-transform: uppercase;
+        }
+        .luma-compare-value { font-weight: 600; color: var(--foreground); font-size: 14px; }
+        .luma-compare-highlight { color: var(--primary); }
+        .luma-compare-col-highlight {
+          background: color-mix(in srgb, var(--primary) 4%, transparent);
+        }
+        .luma-plan-name { font-size: 16px; font-weight: 700; color: var(--foreground); }
+        .luma-plan-price { font-size: 28px; font-weight: 700; color: var(--foreground); letter-spacing: -.02em; }
+        .luma-plan-price-unit { font-size: 13px; font-weight: 500; color: var(--muted-foreground); }
+        .luma-badge {
+          display: inline-flex; align-items: center;
+          background: var(--primary); color: var(--primary-foreground);
+          font-size: 10px; font-weight: 700;
+          letter-spacing: .08em; text-transform: uppercase;
+          padding: calc(var(--spacing)*1) calc(var(--spacing)*2);
+          border-radius: 999px;
+        }
+
+        /* ===== Dashboard mock ===== */
+        .luma-dashboard {
+          background: linear-gradient(135deg, var(--secondary), var(--accent));
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
+          box-shadow: var(--shadow-md);
+          padding: calc(var(--spacing)*6);
+          min-height: 360px;
+          display: flex; flex-direction: column; gap: calc(var(--spacing)*4);
+        }
+        .luma-chart-bars { display: flex; align-items: flex-end; gap: calc(var(--spacing)*2.5); height: 180px; padding-top: calc(var(--spacing)*4); }
+        .luma-chart-bar {
+          flex: 1; border-radius: calc(var(--radius-sm)) calc(var(--radius-sm)) 0 0;
+          background: linear-gradient(180deg, var(--brand-400), var(--brand-500));
+          min-height: 24px;
+        }
+        .luma-stat-pill {
+          background: var(--card); border: 1px solid var(--border);
+          border-radius: var(--radius-md); padding: calc(var(--spacing)*2.5) calc(var(--spacing)*3);
+          box-shadow: var(--shadow-xs);
+        }
+
+        /* ===== Trust strip ===== */
+        .luma-trust-name {
+          display: inline-flex; align-items: center;
+          font-size: 15px; font-weight: 600; color: var(--muted-foreground);
+          letter-spacing: -.01em;
+          padding: calc(var(--spacing)*2) calc(var(--spacing)*3.5);
+          border: 1px solid var(--border); border-radius: 999px;
+          background: var(--card);
+        }
+
+        /* ===== Footer ===== */
+        .luma-footer { background: var(--sidebar); border-top: 1px solid var(--border); }
+        .luma-footer-link {
+          display: block; font-size: 13px; color: var(--muted-foreground);
+          padding: calc(var(--spacing)*1.5) 0; transition: color .18s ease;
+        }
+        .luma-footer-link:hover { color: var(--foreground); }
+
+        /* ===== Icon defaults ===== */
+        .luma-icon { display: inline-flex; width: 1em; height: 1em; color: currentColor; }
+        [data-lucide] { width: 1em; height: 1em; }
+
+        /* ===== Hero product mock ===== */
+        .luma-hero-mock {
+          max-width: 50rem; margin: 0 auto;
+          border-radius: var(--radius-lg);
+          background: var(--card);
+          border: 1px solid var(--border);
+          box-shadow: var(--shadow-xl);
+          overflow: hidden;
+        }
+        .luma-browser-bar {
+          display: flex; align-items: center; gap: calc(var(--spacing)*2);
+          padding: calc(var(--spacing)*2.5) calc(var(--spacing)*3);
+          background: var(--background-100);
+          border-bottom: 1px solid var(--border);
+        }
+        .luma-browser-dots { display: flex; gap: calc(var(--spacing)*1.5); }
+        .luma-browser-dot { width: 10px; height: 10px; border-radius: 999px; }
+        .luma-browser-url {
+          flex: 1; max-width: 24rem;
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-sm);
+          padding: calc(var(--spacing)*1.5) calc(var(--spacing)*3);
+          font-size: 12px; color: var(--muted-foreground);
+          font-family: var(--font-mono);
+        }
+        .luma-app-layout {
+          display: grid; grid-template-columns: 1fr; min-height: 320px;
+        }
+        @media (min-width:768px) {
+          .luma-app-layout { grid-template-columns: 180px 1fr; }
+        }
+        .luma-app-sidebar {
+          background: var(--background-100);
+          border-right: 1px solid var(--border);
+          padding: calc(var(--spacing)*3);
+          display: flex; flex-direction: column; gap: calc(var(--spacing)*1);
+        }
+        .luma-app-nav-item {
+          display: flex; align-items: center; gap: calc(var(--spacing)*2);
+          padding: calc(var(--spacing)*1.5) calc(var(--spacing)*2);
+          border-radius: var(--radius-sm);
+          font-size: 12px; color: var(--muted-foreground);
+        }
+        .luma-app-nav-item.is-active {
+          background: var(--card); color: var(--foreground); font-weight: 600;
+          box-shadow: var(--shadow-xs);
+        }
+        .luma-app-main { padding: calc(var(--spacing)*4); }
+        .luma-board-cols {
+          display: grid; grid-template-columns: 1fr; gap: calc(var(--spacing)*3);
+        }
+        @media (min-width:768px) {
+          .luma-board-cols { grid-template-columns: repeat(3, 1fr); }
+        }
+        .luma-board-col {
+          background: var(--background-100);
+          border-radius: var(--radius-md);
+          padding: calc(var(--spacing)*2.5);
+          display: flex; flex-direction: column; gap: calc(var(--spacing)*2);
+        }
+        .luma-board-col-title {
+          font-size: 11px; font-weight: 700; letter-spacing: .08em;
+          text-transform: uppercase; color: var(--muted-foreground);
+          display: flex; align-items: center; gap: calc(var(--spacing)*1.5);
+        }
+        .luma-board-task {
+          background: var(--card); border: 1px solid var(--border);
+          border-radius: var(--radius-sm); padding: calc(var(--spacing)*2);
+          font-size: 12px; color: var(--foreground);
+          display: flex; flex-direction: column; gap: calc(var(--spacing)*1.5);
+          box-shadow: var(--shadow-xs);
+        }
+        .luma-task-meta { display: flex; align-items: center; gap: calc(var(--spacing)*1.5); }
+        .luma-task-avatar {
+          width: 18px; height: 18px; border-radius: 999px;
+          background: linear-gradient(135deg, var(--brand-300), var(--brand-500));
+        }
+        .luma-task-tag {
+          font-size: 10px; font-weight: 600;
+          padding: calc(var(--spacing)*0.5) calc(var(--spacing)*1.5);
+          border-radius: 999px;
+          background: var(--accent); color: var(--primary);
+        }
+
+        /* ===== Stats metrics bar ===== */
+        .luma-stats {
+          background: var(--accent);
+          border-top: 1px solid var(--border);
+          border-bottom: 1px solid var(--border);
+        }
+        .luma-stats-grid {
+          display: grid; grid-template-columns: repeat(2, 1fr);
+        }
+        @media (min-width:1024px) {
+          .luma-stats-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        .luma-stat-item {
+          padding: calc(var(--spacing)*8) calc(var(--spacing)*5);
+          text-align: center;
+          border-left: 1px solid var(--border);
+        }
+        .luma-stat-item:first-child { border-left: none; }
+        @media (max-width:1023px) {
+          .luma-stat-item:nth-child(2n+1) { border-left: none; }
+        }
+        .luma-stat-number {
+          font-size: clamp(1.75rem, 3vw, 2.5rem);
+          font-weight: 700; color: var(--foreground);
+          letter-spacing: -.02em; line-height: 1;
+        }
+        .luma-stat-label {
+          margin-top: calc(var(--spacing)*2.5);
+          font-size: 12px; font-weight: 600;
+          letter-spacing: .08em; text-transform: uppercase;
+          color: var(--muted-foreground);
+        }
+
+        /* ===== Feature card link ===== */
+        .luma-feature-link {
+          display: inline-flex; align-items: center; gap: calc(var(--spacing)*1);
+          margin-top: calc(var(--spacing)*3.5);
+          font-size: 12px; font-weight: 600; color: var(--primary);
+          transition: gap .18s ease;
+        }
+        .luma-feature-link:hover { gap: calc(var(--spacing)*1.5); }
+
+        /* ===== Solutions by industry ===== */
+        .luma-solutions-grid {
+          display: grid; grid-template-columns: 1fr; gap: calc(var(--spacing)*5);
+        }
+        @media (min-width:768px) {
+          .luma-solutions-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .luma-solution-card {
+          background: var(--card); border: 1px solid var(--border);
+          border-radius: var(--radius); padding: calc(var(--spacing)*6);
+          box-shadow: var(--shadow-sm);
+          display: flex; flex-direction: column; gap: calc(var(--spacing)*3.5);
+          transition: transform .18s ease, box-shadow .18s ease;
+        }
+        .luma-solution-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .luma-solution-icon {
+          display: inline-flex; align-items: center; justify-content: center;
+          width: 48px; height: 48px;
+          border-radius: var(--radius-md);
+          margin-bottom: calc(var(--spacing)*1);
+        }
+        .luma-solution-name {
+          font-size: 18px; font-weight: 700; color: var(--foreground);
+          letter-spacing: -.01em;
+        }
+        .luma-solution-desc {
+          font-size: 14px; line-height: 1.55; color: var(--muted-foreground);
+        }
+        .luma-solution-bullets {
+          list-style: none; padding: 0; margin: 0;
+          display: flex; flex-direction: column; gap: calc(var(--spacing)*2.5);
+        }
+        .luma-solution-bullets li {
+          display: flex; align-items: flex-start; gap: calc(var(--spacing)*2);
+          font-size: 13px; color: var(--foreground); line-height: 1.5;
+        }
+
+        /* ===== Second showcase (reversed) ===== */
+        .luma-showcase-reverse {
+          display: grid; grid-template-columns: 1fr; gap: calc(var(--spacing)*10);
+          align-items: center;
+        }
+        @media (min-width:1024px) {
+          .luma-showcase-reverse { grid-template-columns: 1fr 1fr; }
+        }
+        .luma-task-card {
+          background: var(--card); border: 1px solid var(--border);
+          border-radius: var(--radius); box-shadow: var(--shadow-lg);
+          padding: calc(var(--spacing)*5);
+          display: flex; flex-direction: column; gap: calc(var(--spacing)*4);
+        }
+        .luma-task-card-head {
+          display: flex; align-items: flex-start; justify-content: space-between; gap: calc(var(--spacing)*3);
+        }
+        .luma-task-card-title {
+          font-size: 16px; font-weight: 600; color: var(--foreground);
+          line-height: 1.3;
+        }
+        .luma-task-card-meta {
+          display: flex; align-items: center; gap: calc(var(--spacing)*2.5);
+          font-size: 12px; color: var(--muted-foreground);
+          margin-top: calc(var(--spacing)*1.5);
+        }
+        .luma-task-badge {
+          display: inline-flex; align-items: center; gap: calc(var(--spacing)*1);
+          font-size: 11px; font-weight: 600;
+          padding: calc(var(--spacing)*1) calc(var(--spacing)*2.5);
+          border-radius: 999px;
+          white-space: nowrap;
+        }
+        .luma-task-badge-progress { background: color-mix(in srgb, var(--primary) 12%, transparent); color: var(--primary); }
+        .luma-task-comments {
+          display: flex; flex-direction: column; gap: calc(var(--spacing)*3);
+          padding-top: calc(var(--spacing)*3);
+          border-top: 1px solid var(--border);
+        }
+        .luma-task-comment {
+          display: flex; gap: calc(var(--spacing)*2.5);
+        }
+        .luma-task-comment-avatar {
+          width: 28px; height: 28px; border-radius: 999px;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 11px; font-weight: 600; color: var(--primary-foreground);
+          flex-shrink: 0;
+        }
+        .luma-task-comment-body { flex: 1; display: flex; flex-direction: column; gap: calc(var(--spacing)*1); }
+        .luma-task-comment-author {
+          font-size: 12px; font-weight: 600; color: var(--foreground);
+        }
+        .luma-task-comment-text {
+          font-size: 13px; line-height: 1.5; color: var(--muted-foreground);
+        }
+
+        /* ===== Integration ecosystem ===== */
+        .luma-integrations-grid {
+          display: grid; grid-template-columns: repeat(2, 1fr); gap: calc(var(--spacing)*3);
+        }
+        @media (min-width:768px) { .luma-integrations-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width:1024px) { .luma-integrations-grid { grid-template-columns: repeat(4, 1fr); } }
+        .luma-integration-card {
+          background: var(--card); border: 1px solid var(--border);
+          border-radius: var(--radius-md);
+          padding: calc(var(--spacing)*5) calc(var(--spacing)*3);
+          display: flex; align-items: center; justify-content: center;
+          text-align: center;
+          transition: transform .18s ease, box-shadow .18s ease;
+        }
+        .luma-integration-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+        .luma-integration-name {
+          font-size: 14px; font-weight: 600; color: var(--foreground);
+          letter-spacing: -.01em;
+        }
+        .luma-integrations-link {
+          display: inline-flex; align-items: center; gap: calc(var(--spacing)*1.5);
+          margin-top: calc(var(--spacing)*6);
+          font-size: 14px; font-weight: 600; color: var(--primary);
+        }
+
+        /* ===== Testimonials grid ===== */
+        .luma-testimonials-grid {
+          display: grid; grid-template-columns: 1fr; gap: calc(var(--spacing)*5);
+        }
+        @media (min-width:1024px) { .luma-testimonials-grid { grid-template-columns: repeat(3, 1fr); } }
+        .luma-testimonial-card {
+          background: var(--card); border: 1px solid var(--border);
+          border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+          padding: calc(var(--spacing)*6) calc(var(--spacing)*5);
+          display: flex; flex-direction: column; gap: calc(var(--spacing)*4);
+        }
+        .luma-testimonial-stars { display: flex; gap: calc(var(--spacing)*1); }
+        .luma-testimonial-quote {
+          font-size: 14px; line-height: 1.6; color: var(--foreground);
+          font-weight: 500;
+        }
+        .luma-testimonial-author {
+          display: flex; align-items: center; gap: calc(var(--spacing)*2.5);
+          padding-top: calc(var(--spacing)*3); border-top: 1px solid var(--border);
+        }
+        .luma-testimonial-avatar {
+          width: 36px; height: 36px; border-radius: 999px;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 13px; font-weight: 600; color: var(--primary-foreground);
+          flex-shrink: 0;
+        }
+        .luma-testimonial-name {
+          font-size: 14px; font-weight: 600; color: var(--foreground);
+        }
+        .luma-testimonial-role {
+          font-size: 12px; color: var(--muted-foreground);
+          margin-top: calc(var(--spacing)*0.5);
+        }
+
+        /* ===== FAQ ===== */
+        .luma-faq-list {
+          display: flex; flex-direction: column; gap: calc(var(--spacing)*3);
+          max-width: 48rem;
+        }
+        .luma-faq-item {
+          background: var(--card); border: 1px solid var(--border);
+          border-radius: var(--radius-md);
+          padding: calc(var(--spacing)*5) calc(var(--spacing)*5);
+          display: flex; flex-direction: column; gap: calc(var(--spacing)*2.5);
+        }
+        .luma-faq-question {
+          font-size: 15px; font-weight: 600; color: var(--foreground);
+          line-height: 1.4;
+        }
+        .luma-faq-answer {
+          font-size: 14px; line-height: 1.6; color: var(--muted-foreground);
+        }
+
+        /* ===== Consolidated responsive media queries (moved from scattered style blocks) ===== */
+        @media (min-width:768px) { .luma-features-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+        @media (min-width:1024px) { .luma-features-grid { grid-template-columns: repeat(3, 1fr) !important; } }
+        @media (min-width:1024px) { .luma-showcase-grid { grid-template-columns: 1fr 1fr !important; } }
+        @media (max-width:767px) {
+          .luma-compare-grid { grid-template-columns: 1fr 1fr !important; }
+          .luma-compare-grid .luma-compare-cell:nth-child(1) { grid-column: 1 / -1; border-right: none; }
+          .luma-compare-grid.luma-compare-row-header .luma-compare-cell:nth-child(1) { display: none; }
+        }
+        @media (min-width:768px) { .luma-footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr !important; } }
+        @media (min-width:768px) { .luma-footer-bottom { flex-direction: row !important; } }
+      </style>
+
+      <!-- ============ 1. NAVIGATION ============ -->
+      <nav class="luma-nav" aria-label="主导航">
+        <div class="luma-container luma-nav-inner">
+          <a href="#" class="luma-brand-text" data-dom-id="nav-brand" aria-label="Lumina 首页">Lumina</a>
+          <div class="luma-nav-links">
+            <a href="#features" class="luma-nav-link" data-dom-id="nav-features">产品功能</a>
+            <a href="#showcase" class="luma-nav-link" data-dom-id="nav-solutions">解决方案</a>
+            <a href="#pricing" class="luma-nav-link" data-dom-id="nav-pricing">定价</a>
+            <a href="#about" class="luma-nav-link" data-dom-id="nav-about">关于我们</a>
+          </div>
+          <div class="luma-nav-actions">
+            <a href="#" class="luma-btn luma-btn-text" data-dom-id="nav-login" style="height:32px;font-size:13px;">登录</a>
+            <a href="#cta" class="luma-btn luma-btn-sm" data-dom-id="nav-trial">免费试用</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- ============ 2. HERO ============ -->
+      <header class="luma-section" style="padding-top:8rem;padding-bottom:6rem;">
+        <div class="luma-container">
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:calc(var(--spacing)*6);max-width:56rem;margin:0 auto;">
+            <span class="luma-eyebrow">Lumina · 智能工作平台</span>
+            <h1 style="font-size:clamp(2.75rem,6vw,4rem);font-weight:700;line-height:1.05;letter-spacing:-.03em;color:var(--foreground);margin:0;">
+              让团队协作<br>
+              <span style="color:var(--primary);">如丝般顺滑</span>
+            </h1>
+            <p class="luma-subtitle" style="max-width:36rem;">
+              Lumina 将项目管理、实时协作与智能分析融为一体，帮助团队专注真正重要的事。
+            </p>
+            <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:calc(var(--spacing)*3);">
+              <a href="#cta" class="luma-btn luma-btn-primary-lg" data-dom-id="cta-trial-hero">免费试用 30 天</a>
+              <a href="#showcase" class="luma-btn luma-btn-text" data-dom-id="cta-demo-hero" style="gap:calc(var(--spacing)*1.5);">
+                <i data-lucide="circle-play" style="width:20px;height:20px;color:var(--primary);"></i>
+                观看产品演示
+              </a>
+            </div>
+
+            <!-- Browser / app UI mock -->
+            <div class="luma-hero-mock" aria-hidden="true" role="presentation">
+              <div class="luma-browser-bar">
+                <div class="luma-browser-dots">
+                  <span class="luma-browser-dot" style="background:var(--state-error);"></span>
+                  <span class="luma-browser-dot" style="background:var(--chart-3);"></span>
+                  <span class="luma-browser-dot" style="background:var(--state-success);"></span>
+                </div>
+                <div class="luma-browser-url">app.lumina.work / projects / nimbus-launch</div>
+              </div>
+              <div class="luma-app-layout">
+                <aside class="luma-app-sidebar">
+                  <div class="luma-app-nav-item is-active">
+                    <i data-lucide="layout-dashboard" style="width:14px;height:14px;"></i>
+                    <span>看板</span>
+                  </div>
+                  <div class="luma-app-nav-item">
+                    <i data-lucide="list-todo" style="width:14px;height:14px;"></i>
+                    <span>任务</span>
+                  </div>
+                  <div class="luma-app-nav-item">
+                    <i data-lucide="calendar" style="width:14px;height:14px;"></i>
+                    <span>日程</span>
+                  </div>
+                  <div class="luma-app-nav-item">
+                    <i data-lucide="file-text" style="width:14px;height:14px;"></i>
+                    <span>文档</span>
+                  </div>
+                  <div class="luma-app-nav-item">
+                    <i data-lucide="bar-chart-3" style="width:14px;height:14px;"></i>
+                    <span>分析</span>
+                  </div>
+                </aside>
+                <div class="luma-app-main">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:calc(var(--spacing)*3);">
+                    <span style="font-size:13px;font-weight:700;color:var(--foreground);">Nimbus 发布冲刺</span>
+                    <div class="luma-task-avatar" style="width:20px;height:20px;"></div>
+                  </div>
+                  <div class="luma-board-cols">
+                    <div class="luma-board-col">
+                      <span class="luma-board-col-title">待办</span>
+                      <div class="luma-board-task">
+                        <span>落地页文案终稿</span>
+                        <div class="luma-task-meta">
+                          <span class="luma-task-avatar"></span>
+                          <span class="luma-task-tag">市场</span>
+                        </div>
+                      </div>
+                      <div class="luma-board-task">
+                        <span>设计走查清单</span>
+                        <div class="luma-task-meta">
+                          <span class="luma-task-avatar"></span>
+                          <span class="luma-task-tag">设计</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="luma-board-col">
+                      <span class="luma-board-col-title">进行中</span>
+                      <div class="luma-board-task">
+                        <span>CI 流水线优化</span>
+                        <div class="luma-task-meta">
+                          <span class="luma-task-avatar"></span>
+                          <span class="luma-task-tag">工程</span>
+                        </div>
+                      </div>
+                      <div class="luma-board-task">
+                        <span>客户访谈整理</span>
+                        <div class="luma-task-meta">
+                          <span class="luma-task-avatar"></span>
+                          <span class="luma-task-tag">产品</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="luma-board-col">
+                      <span class="luma-board-col-title">已完成</span>
+                      <div class="luma-board-task">
+                        <span>需求评审会议</span>
+                        <div class="luma-task-meta">
+                          <span class="luma-task-avatar"></span>
+                          <span class="luma-task-tag">产品</span>
+                        </div>
+                      </div>
+                      <div class="luma-board-task">
+                        <span>品牌 Logo 更新</span>
+                        <div class="luma-task-meta">
+                          <span class="luma-task-avatar"></span>
+                          <span class="luma-task-tag">设计</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p style="font-size:13px;color:var(--muted-foreground);">
+              已有 12,000+ 团队选择 Lumina
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <!-- ============ 3. TRUST BAR ============ -->
+      <section style="padding-top:2rem;padding-bottom:4rem;">
+        <div class="luma-container">
+          <p style="text-align:center;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:calc(var(--spacing)*5);">
+            受信赖的团队
+          </p>
+          <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:calc(var(--spacing)*3);">
+            <span class="luma-trust-name">Nova Studio</span>
+            <span class="luma-trust-name">Bright Labs</span>
+            <span class="luma-trust-name">Cirrus</span>
+            <span class="luma-trust-name">Atlas Group</span>
+            <span class="luma-trust-name">Lumenly</span>
+            <span class="luma-trust-name">Forge</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ STATS METRICS BAR ============ -->
+      <section class="luma-stats" aria-label="关键指标">
+        <div class="luma-container">
+          <div class="luma-stats-grid">
+            <div class="luma-stat-item">
+              <div class="luma-stat-number">12,000+</div>
+              <div class="luma-stat-label">注册团队</div>
+            </div>
+            <div class="luma-stat-item">
+              <div class="luma-stat-number" style="color:var(--primary);">38%</div>
+              <div class="luma-stat-label">平均效率提升</div>
+            </div>
+            <div class="luma-stat-item">
+              <div class="luma-stat-number">200+</div>
+              <div class="luma-stat-label">集成应用</div>
+            </div>
+            <div class="luma-stat-item">
+              <div class="luma-stat-number" style="color:var(--success);">99.99%</div>
+              <div class="luma-stat-label">服务可用性</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 4. FEATURES ============ -->
+      <section id="features" class="luma-section">
+        <div class="luma-container">
+          <div style="text-align:center;max-width:40rem;margin:0 auto calc(var(--spacing)*10);">
+            <span class="luma-eyebrow">核心功能</span>
+            <h2 class="luma-h2" style="margin-top:calc(var(--spacing)*3);">为现代团队量身打造</h2>
+            <p class="luma-subtitle" style="margin-top:calc(var(--spacing)*4);">
+              从协作到安全，Lumina 覆盖团队工作的每一个环节，让效率自然发生。
+            </p>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr;gap:calc(var(--spacing)*5);" class="luma-features-grid">
+            <article class="luma-card luma-card-hover">
+              <div class="luma-icon-tile"><i data-lucide="message-circle-more" style="width:24px;height:24px;"></i></div>
+              <h3 style="font-size:18px;font-weight:600;line-height:1.15;color:var(--foreground);margin:0 0 calc(var(--spacing)*2);">实时协作</h3>
+              <p style="font-size:13px;line-height:1.55;color:var(--muted-foreground);margin:0;">
+                多人同时编辑文档与白板，评论与变更实时同步，@提及即时通知，版本历史可追溯。团队永远在同一频道。
+              </p>
+              <a href="#" class="luma-feature-link" data-dom-id="feature-link-collab">
+                了解更多 <i data-lucide="chevron-right" style="width:14px;height:14px;"></i>
+              </a>
+            </article>
+            <article class="luma-card luma-card-hover">
+              <div class="luma-icon-tile"><i data-lucide="mouse-pointer-click" style="width:24px;height:24px;"></i></div>
+              <h3 style="font-size:18px;font-weight:600;line-height:1.15;color:var(--foreground);margin:0 0 calc(var(--spacing)*2);">智能自动化</h3>
+              <p style="font-size:13px;line-height:1.55;color:var(--muted-foreground);margin:0;">
+                基于团队工作流自动分配任务、生成周报、触发审批。减少 70% 重复操作，让团队聚焦创造性工作。
+              </p>
+              <a href="#" class="luma-feature-link" data-dom-id="feature-link-automation">
+                了解更多 <i data-lucide="chevron-right" style="width:14px;height:14px;"></i>
+              </a>
+            </article>
+            <article class="luma-card luma-card-hover">
+              <div class="luma-icon-tile"><i data-lucide="circle-check" style="width:24px;height:24px;"></i></div>
+              <h3 style="font-size:18px;font-weight:600;line-height:1.15;color:var(--foreground);margin:0 0 calc(var(--spacing)*2);">企业级安全</h3>
+              <p style="font-size:13px;line-height:1.55;color:var(--muted-foreground);margin:0;">
+                端到端加密、SSO 单点登录、细粒度权限控制。通过 SOC 2 Type II 与 GDPR 合规审计，数据安全无忧。
+              </p>
+              <a href="#" class="luma-feature-link" data-dom-id="feature-link-security">
+                了解更多 <i data-lucide="chevron-right" style="width:14px;height:14px;"></i>
+              </a>
+            </article>
+            <article class="luma-card luma-card-hover">
+              <div class="luma-icon-tile"><i data-lucide="funnel" style="width:24px;height:24px;"></i></div>
+              <h3 style="font-size:18px;font-weight:600;line-height:1.15;color:var(--foreground);margin:0 0 calc(var(--spacing)*2);">数据分析</h3>
+              <p style="font-size:13px;line-height:1.55;color:var(--muted-foreground);margin:0;">
+                实时仪表盘与自定义报表，支持跨项目数据聚合与趋势分析。让每个决策都有数据支撑，不再凭直觉。
+              </p>
+              <a href="#" class="luma-feature-link" data-dom-id="feature-link-analytics">
+                了解更多 <i data-lucide="chevron-right" style="width:14px;height:14px;"></i>
+              </a>
+            </article>
+            <article class="luma-card luma-card-hover">
+              <div class="luma-icon-tile"><i data-lucide="folder-open" style="width:24px;height:24px;"></i></div>
+              <h3 style="font-size:18px;font-weight:600;line-height:1.15;color:var(--foreground);margin:0 0 calc(var(--spacing)*2);">统一空间</h3>
+              <p style="font-size:13px;line-height:1.55;color:var(--muted-foreground);margin:0;">
+                文档、任务、日程、文件、聊天一站式管理。告别工具切换的认知负担，专注完成真正重要的事。
+              </p>
+              <a href="#" class="luma-feature-link" data-dom-id="feature-link-workspace">
+                了解更多 <i data-lucide="chevron-right" style="width:14px;height:14px;"></i>
+              </a>
+            </article>
+            <article class="luma-card luma-card-hover">
+              <div class="luma-icon-tile"><i data-lucide="star" style="width:24px;height:24px;"></i></div>
+              <h3 style="font-size:18px;font-weight:600;line-height:1.15;color:var(--foreground);margin:0 0 calc(var(--spacing)*2);">灵活集成</h3>
+              <p style="font-size:13px;line-height:1.55;color:var(--muted-foreground);margin:0;">
+                连接 Slack、GitHub、Figma、Notion 等 200+ 主流工具。通过开放 API 与 Webhook 构建专属自动化工作流。
+              </p>
+              <a href="#" class="luma-feature-link" data-dom-id="feature-link-integrations">
+                了解更多 <i data-lucide="chevron-right" style="width:14px;height:14px;"></i>
+              </a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SOLUTIONS BY INDUSTRY ============ -->
+      <section id="solutions" class="luma-section" style="background:var(--background-100);">
+        <div class="luma-container">
+          <div style="text-align:center;max-width:40rem;margin:0 auto calc(var(--spacing)*10);">
+            <span class="luma-eyebrow">行业方案</span>
+            <h2 class="luma-h2" style="margin-top:calc(var(--spacing)*3);">不同行业，同一平台</h2>
+            <p class="luma-subtitle" style="margin-top:calc(var(--spacing)*4);">
+              无论团队在做什么，Lumina 都能适配你的工作方式。
+            </p>
+          </div>
+          <div class="luma-solutions-grid">
+            <article class="luma-solution-card">
+              <div class="luma-solution-icon" style="background:color-mix(in srgb, var(--brand-500) 12%, transparent);color:var(--brand-500);">
+                <i data-lucide="folder" style="width:24px;height:24px;"></i>
+              </div>
+              <h3 class="luma-solution-name">产品研发</h3>
+              <p class="luma-solution-desc">敏捷迭代，从需求到发布全程追踪。</p>
+              <ul class="luma-solution-bullets">
+                <li>
+                  <i data-lucide="check" style="width:18px;height:18px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span>需求池与冲刺看板</span>
+                </li>
+                <li>
+                  <i data-lucide="check" style="width:18px;height:18px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span>代码评审与 CI/CD 状态联动</span>
+                </li>
+                <li>
+                  <i data-lucide="check" style="width:18px;height:18px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span>发布版本自动归档</span>
+                </li>
+              </ul>
+            </article>
+            <article class="luma-solution-card">
+              <div class="luma-solution-icon" style="background:color-mix(in srgb, var(--chart-4) 14%, transparent);color:var(--chart-4);">
+                <i data-lucide="pen-line" style="width:24px;height:24px;"></i>
+              </div>
+              <h3 class="luma-solution-name">设计创意</h3>
+              <p class="luma-solution-desc">从灵感到交付，设计资产集中管理。</p>
+              <ul class="luma-solution-bullets">
+                <li>
+                  <i data-lucide="check" style="width:18px;height:18px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span>Figma 实时同步与评论</span>
+                </li>
+                <li>
+                  <i data-lucide="check" style="width:18px;height:18px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span>设计规范自动沉淀</span>
+                </li>
+                <li>
+                  <i data-lucide="check" style="width:18px;height:18px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span>素材版本控制与审批</span>
+                </li>
+              </ul>
+            </article>
+            <article class="luma-solution-card">
+              <div class="luma-solution-icon" style="background:color-mix(in srgb, var(--chart-3) 14%, transparent);color:var(--chart-3);">
+                <i data-lucide="send-horizontal" style="width:24px;height:24px;"></i>
+              </div>
+              <h3 class="luma-solution-name">市场营销</h3>
+              <p class="luma-solution-desc">campaign 全流程管理，数据驱动增长。</p>
+              <ul class="luma-solution-bullets">
+                <li>
+                  <i data-lucide="check" style="width:18px;height:18px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span>内容日历与排期</span>
+                </li>
+                <li>
+                  <i data-lucide="check" style="width:18px;height:18px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span>多渠道效果分析</span>
+                </li>
+                <li>
+                  <i data-lucide="check" style="width:18px;height:18px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span>预算与 ROI 追踪</span>
+                </li>
+              </ul>
+            </article>
+            <article class="luma-solution-card">
+              <div class="luma-solution-icon" style="background:color-mix(in srgb, var(--success) 14%, transparent);color:var(--success);">
+                <i data-lucide="house" style="width:24px;height:24px;"></i>
+              </div>
+              <h3 class="luma-solution-name">运营管理</h3>
+              <p class="luma-solution-desc">流程标准化，运营效率可量化。</p>
+              <ul class="luma-solution-bullets">
+                <li>
+                  <i data-lucide="check" style="width:18px;height:18px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span>SOP 模板与检查清单</span>
+                </li>
+                <li>
+                  <i data-lucide="check" style="width:18px;height:18px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span>工单自动分配与升级</span>
+                </li>
+                <li>
+                  <i data-lucide="check" style="width:18px;height:18px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span>运营日报自动生成</span>
+                </li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 5. PRODUCT SHOWCASE ============ -->
+      <section id="showcase" class="luma-section" style="background:var(--accent);">
+        <div class="luma-container">
+          <div style="display:grid;grid-template-columns:1fr;gap:calc(var(--spacing)*10);align-items:center;" class="luma-showcase-grid">
+            <div style="display:flex;flex-direction:column;gap:calc(var(--spacing)*5);">
+              <span class="luma-eyebrow">深度功能</span>
+              <h3 style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:700;line-height:1.15;letter-spacing:-.02em;color:var(--foreground);margin:0;">
+                数据驱动的决策仪表盘
+              </h3>
+              <p style="font-size:16px;line-height:1.6;color:var(--muted-foreground);margin:0;">
+                将分散在多个工具中的数据汇聚到一个视图。Lumina 的智能仪表盘实时呈现关键指标，帮助管理者在数秒内洞察趋势、识别瓶颈，并做出有据可依的决策。
+              </p>
+              <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:calc(var(--spacing)*3);">
+                <li style="display:flex;align-items:flex-start;gap:calc(var(--spacing)*2.5);">
+                  <i data-lucide="check" style="width:20px;height:20px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span style="font-size:15px;color:var(--foreground);line-height:1.5;">自定义指标卡片，拖拽即可组合仪表盘</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:calc(var(--spacing)*2.5);">
+                  <i data-lucide="check" style="width:20px;height:20px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span style="font-size:15px;color:var(--foreground);line-height:1.5;">跨项目数据聚合，团队进度一目了然</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:calc(var(--spacing)*2.5);">
+                  <i data-lucide="check" style="width:20px;height:20px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span style="font-size:15px;color:var(--foreground);line-height:1.5;">定时报告自动推送至邮箱与群聊</span>
+                </li>
+              </ul>
+              <a href="#" class="luma-btn luma-btn-text" data-dom-id="cta-learn-more" style="padding:0;justify-content:flex-start;gap:calc(var(--spacing)*1.5);">
+                了解更多
+                <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+              </a>
+            </div>
+            <div class="luma-dashboard" aria-hidden="true">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div style="display:flex;flex-direction:column;gap:calc(var(--spacing)*1);">
+                  <span style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground);">团队效率概览</span>
+                  <span style="font-size:24px;font-weight:700;color:var(--foreground);letter-spacing:-.02em;">+38.2%</span>
+                </div>
+                <div class="luma-stat-pill" style="display:flex;flex-direction:column;gap:calc(var(--spacing)*1);">
+                  <span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-foreground);">活跃任务</span>
+                  <span style="font-size:18px;font-weight:700;color:var(--foreground);">248</span>
+                </div>
+              </div>
+              <div class="luma-chart-bars">
+                <div class="luma-chart-bar" style="height:45%;"></div>
+                <div class="luma-chart-bar" style="height:62%;"></div>
+                <div class="luma-chart-bar" style="height:38%;"></div>
+                <div class="luma-chart-bar" style="height:78%;"></div>
+                <div class="luma-chart-bar" style="height:55%;"></div>
+                <div class="luma-chart-bar" style="height:90%;"></div>
+                <div class="luma-chart-bar" style="height:70%;"></div>
+                <div class="luma-chart-bar" style="height:85%;"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--spacing)*2.5);">
+                <div class="luma-stat-pill" style="display:flex;flex-direction:column;gap:calc(var(--spacing)*1);">
+                  <span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-foreground);">已完成</span>
+                  <span style="font-size:16px;font-weight:700;color:var(--success);">182</span>
+                </div>
+                <div class="luma-stat-pill" style="display:flex;flex-direction:column;gap:calc(var(--spacing)*1);">
+                  <span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-foreground);">进行中</span>
+                  <span style="font-size:16px;font-weight:700;color:var(--primary);">48</span>
+                </div>
+                <div class="luma-stat-pill" style="display:flex;flex-direction:column;gap:calc(var(--spacing)*1);">
+                  <span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-foreground);">延期</span>
+                  <span style="font-size:16px;font-weight:700;color:var(--state-error);">18</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SECOND PRODUCT SHOWCASE (reversed) ============ -->
+      <section id="collaboration" class="luma-section">
+        <div class="luma-container">
+          <div class="luma-showcase-reverse">
+            <!-- LEFT: task card mock -->
+            <div class="luma-task-card" aria-hidden="true" role="presentation">
+              <div class="luma-task-card-head">
+                <div>
+                  <span class="luma-task-card-title">落地页文案终稿评审</span>
+                  <div class="luma-task-card-meta">
+                    <span class="luma-task-avatar" style="display:inline-block;"></span>
+                    <span>林婉清 负责人</span>
+                    <span>·</span>
+                    <span>今天到期</span>
+                  </div>
+                </div>
+                <span class="luma-task-badge luma-task-badge-progress">
+                  <i data-lucide="circle-dot" style="width:12px;height:12px;"></i>
+                  进行中
+                </span>
+              </div>
+              <div class="luma-task-comments">
+                <div class="luma-task-comment">
+                  <div class="luma-task-comment-avatar" style="background:linear-gradient(135deg,var(--brand-300),var(--brand-500));">陈</div>
+                  <div class="luma-task-comment-body">
+                    <span class="luma-task-comment-author">陈思远</span>
+                    <p class="luma-task-comment-text" style="margin:0;">已加入任务，预计今天下午完成初稿，我会先补上安全特性相关段落。</p>
+                  </div>
+                </div>
+                <div class="luma-task-comment">
+                  <div class="luma-task-comment-avatar" style="background:linear-gradient(135deg,var(--chart-3),var(--state-error));">林</div>
+                  <div class="luma-task-comment-body">
+                    <span class="luma-task-comment-author">林婉清</span>
+                    <p class="luma-task-comment-text" style="margin:0;">记得在文案里强调新版本的 SOC 2 合规与端到端加密，市场这边会同步准备配图。</p>
+                  </div>
+                </div>
+                <div class="luma-task-comment">
+                  <div class="luma-task-comment-avatar" style="background:linear-gradient(135deg,var(--chart-4),var(--brand-700));">王</div>
+                  <div class="luma-task-comment-body">
+                    <span class="luma-task-comment-author">王沐阳</span>
+                    <p class="luma-task-comment-text" style="margin:0;">Figma 原型已更新到 v2.3，请同步评审，视觉规范我会一并附在文档里。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT: text -->
+            <div style="display:flex;flex-direction:column;gap:calc(var(--spacing)*5);">
+              <span class="luma-eyebrow">协作体验</span>
+              <h3 style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:700;line-height:1.15;letter-spacing:-.02em;color:var(--foreground);margin:0;">
+                无缝衔接的团队沟通
+              </h3>
+              <p style="font-size:16px;line-height:1.6;color:var(--muted-foreground);margin:0;">
+                在 Lumina 中，讨论围绕工作本身展开。任务评论、文档批注、@提及通知，所有沟通都有上下文。团队成员无需在聊天工具和任务系统间反复切换，信息自然流动。
+              </p>
+              <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:calc(var(--spacing)*3);">
+                <li style="display:flex;align-items:flex-start;gap:calc(var(--spacing)*2.5);">
+                  <i data-lucide="check" style="width:20px;height:20px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span style="font-size:15px;color:var(--foreground);line-height:1.5;">任务评论支持附件与代码片段，讨论即上下文</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:calc(var(--spacing)*2.5);">
+                  <i data-lucide="check" style="width:20px;height:20px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span style="font-size:15px;color:var(--foreground);line-height:1.5;">智能 @提及推荐，自动找到对的负责人</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:calc(var(--spacing)*2.5);">
+                  <i data-lucide="check" style="width:20px;height:20px;color:var(--success);flex-shrink:0;margin-top:2px;"></i>
+                  <span style="font-size:15px;color:var(--foreground);line-height:1.5;">与 Slack / 飞书 / 钉钉双向同步，不改变现有习惯</span>
+                </li>
+              </ul>
+              <a href="#" class="luma-btn luma-btn-text" data-dom-id="cta-collab-more" style="padding:0;justify-content:flex-start;gap:calc(var(--spacing)*1.5);">
+                了解更多
+                <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ INTEGRATION ECOSYSTEM ============ -->
+      <section id="integrations" class="luma-section" style="background:var(--background-100);">
+        <div class="luma-container">
+          <div style="text-align:center;max-width:40rem;margin:0 auto calc(var(--spacing)*10);">
+            <span class="luma-eyebrow">集成生态</span>
+            <h2 class="luma-h2" style="margin-top:calc(var(--spacing)*3);">连接你已使用的工具</h2>
+            <p class="luma-subtitle" style="margin-top:calc(var(--spacing)*4);">
+              Lumina 与 200+ 主流工具深度集成，让数据自由流动。
+            </p>
+          </div>
+          <div class="luma-integrations-grid">
+            <div class="luma-integration-card"><span class="luma-integration-name">Slack</span></div>
+            <div class="luma-integration-card"><span class="luma-integration-name">GitHub</span></div>
+            <div class="luma-integration-card"><span class="luma-integration-name">Figma</span></div>
+            <div class="luma-integration-card"><span class="luma-integration-name">Notion</span></div>
+            <div class="luma-integration-card"><span class="luma-integration-name">飞书</span></div>
+            <div class="luma-integration-card"><span class="luma-integration-name">钉钉</span></div>
+            <div class="luma-integration-card"><span class="luma-integration-name">Zoom</span></div>
+            <div class="luma-integration-card"><span class="luma-integration-name">Google Drive</span></div>
+            <div class="luma-integration-card"><span class="luma-integration-name">Jira</span></div>
+            <div class="luma-integration-card"><span class="luma-integration-name">Linear</span></div>
+            <div class="luma-integration-card"><span class="luma-integration-name">VS Code</span></div>
+            <div class="luma-integration-card"><span class="luma-integration-name">Webhook</span></div>
+          </div>
+          <div style="text-align:center;">
+            <a href="#" class="luma-integrations-link" data-dom-id="cta-all-integrations">
+              查看全部集成
+              <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 6. PRICING COMPARISON ============ -->
+      <section id="pricing" class="luma-section">
+        <div class="luma-container">
+          <div style="text-align:center;max-width:40rem;margin:0 auto calc(var(--spacing)*10);">
+            <span class="luma-eyebrow">定价方案</span>
+            <h2 class="luma-h2" style="margin-top:calc(var(--spacing)*3);">选择适合团队的方案</h2>
+            <p class="luma-subtitle" style="margin-top:calc(var(--spacing)*4);">
+              透明的定价，没有隐藏费用。随时升级或降级，灵活适配团队成长。
+            </p>
+          </div>
+
+          <div class="luma-compare">
+            <!-- Header row -->
+            <div class="luma-compare-grid luma-compare-row-header">
+              <div class="luma-compare-cell">
+                <span class="luma-compare-metric">方案对比</span>
+              </div>
+              <div class="luma-compare-cell">
+                <span class="luma-plan-name">Starter</span>
+                <div style="display:flex;align-items:baseline;gap:calc(var(--spacing)*1);">
+                  <span class="luma-plan-price">¥0</span>
+                  <span class="luma-plan-price-unit">/ forever</span>
+                </div>
+              </div>
+              <div class="luma-compare-cell luma-compare-col-highlight" style="position:relative;">
+                <span class="luma-badge" style="position:absolute;top:calc(var(--spacing)*2);right:calc(var(--spacing)*2.5);">推荐</span>
+                <span class="luma-plan-name luma-compare-highlight">Pro</span>
+                <div style="display:flex;align-items:baseline;gap:calc(var(--spacing)*1);">
+                  <span class="luma-plan-price luma-compare-highlight">¥99</span>
+                  <span class="luma-plan-price-unit">/ 用户 / 月</span>
+                </div>
+              </div>
+              <div class="luma-compare-cell">
+                <span class="luma-plan-name">Enterprise</span>
+                <div style="display:flex;align-items:baseline;gap:calc(var(--spacing)*1);">
+                  <span class="luma-plan-price">联系销售</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row: 团队成员数 -->
+            <div class="luma-compare-grid">
+              <div class="luma-compare-cell"><span class="luma-compare-metric">团队成员数</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value">5 人</span></div>
+              <div class="luma-compare-cell luma-compare-col-highlight"><span class="luma-compare-value luma-compare-highlight">无限</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value">无限</span></div>
+            </div>
+            <!-- Row: 存储空间 -->
+            <div class="luma-compare-grid">
+              <div class="luma-compare-cell"><span class="luma-compare-metric">存储空间</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value">5 GB</span></div>
+              <div class="luma-compare-cell luma-compare-col-highlight"><span class="luma-compare-value luma-compare-highlight">100 GB</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value">无限</span></div>
+            </div>
+            <!-- Row: 自动化工作流 -->
+            <div class="luma-compare-grid">
+              <div class="luma-compare-cell"><span class="luma-compare-metric">自动化工作流</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value" style="color:var(--muted-foreground);">不支持</span></div>
+              <div class="luma-compare-cell luma-compare-col-highlight"><span class="luma-compare-value luma-compare-highlight">支持</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value">支持</span></div>
+            </div>
+            <!-- Row: 数据分析 -->
+            <div class="luma-compare-grid">
+              <div class="luma-compare-cell"><span class="luma-compare-metric">数据分析</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value">基础</span></div>
+              <div class="luma-compare-cell luma-compare-col-highlight"><span class="luma-compare-value luma-compare-highlight">高级</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value">自定义</span></div>
+            </div>
+            <!-- Row: SSO 单点登录 -->
+            <div class="luma-compare-grid">
+              <div class="luma-compare-cell"><span class="luma-compare-metric">SSO 单点登录</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value" style="color:var(--muted-foreground);">不支持</span></div>
+              <div class="luma-compare-cell luma-compare-col-highlight"><span class="luma-compare-value" style="color:var(--muted-foreground);">不支持</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value">支持</span></div>
+            </div>
+            <!-- Row: SLA 保障 -->
+            <div class="luma-compare-grid">
+              <div class="luma-compare-cell"><span class="luma-compare-metric">SLA 保障</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value" style="color:var(--muted-foreground);">无</span></div>
+              <div class="luma-compare-cell luma-compare-col-highlight"><span class="luma-compare-value luma-compare-highlight">99.9%</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value">99.99%</span></div>
+            </div>
+            <!-- Row: 专属客户经理 -->
+            <div class="luma-compare-grid">
+              <div class="luma-compare-cell"><span class="luma-compare-metric">专属客户经理</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value" style="color:var(--muted-foreground);">不支持</span></div>
+              <div class="luma-compare-cell luma-compare-col-highlight"><span class="luma-compare-value" style="color:var(--muted-foreground);">不支持</span></div>
+              <div class="luma-compare-cell"><span class="luma-compare-value">支持</span></div>
+            </div>
+
+            <!-- CTA row -->
+            <div class="luma-compare-grid" style="background:var(--background);">
+              <div class="luma-compare-cell" style="border-bottom:none;"><span class="luma-compare-metric">开始使用</span></div>
+              <div class="luma-compare-cell" style="border-bottom:none;">
+                <a href="#" class="luma-btn luma-btn-secondary" data-dom-id="cta-plan-starter" style="width:100%;height:40px;font-size:14px;">免费开始</a>
+              </div>
+              <div class="luma-compare-cell luma-compare-col-highlight" style="border-bottom:none;">
+                <a href="#" class="luma-btn luma-btn-primary" data-dom-id="cta-plan-pro" style="width:100%;height:40px;font-size:14px;">免费试用 30 天</a>
+              </div>
+              <div class="luma-compare-cell" style="border-bottom:none;">
+                <a href="#" class="luma-btn luma-btn-secondary" data-dom-id="cta-plan-enterprise" style="width:100%;height:40px;font-size:14px;">联系销售</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 7. TESTIMONIALS ============ -->
+      <section id="testimonials" class="luma-section" style="padding-top:4rem;">
+        <div class="luma-container">
+          <div style="text-align:center;max-width:40rem;margin:0 auto calc(var(--spacing)*10);">
+            <span class="luma-eyebrow">客户故事</span>
+            <h2 class="luma-h2" style="margin-top:calc(var(--spacing)*3);">团队信任 Lumina</h2>
+            <p class="luma-subtitle" style="margin-top:calc(var(--spacing)*4);">
+              来自不同行业的团队，用真实数据讲述与 Lumina 共同成长的故事。
+            </p>
+          </div>
+          <div class="luma-testimonials-grid">
+            <article class="luma-testimonial-card">
+              <div class="luma-testimonial-stars">
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+              </div>
+              <blockquote class="luma-testimonial-quote" style="margin:0;">
+                “切换到 Lumina 之后，我们的跨部门协作效率提升了近 40%。所有项目数据第一次真正汇聚在同一个地方，决策变得前所未有的清晰。”
+              </blockquote>
+              <div class="luma-testimonial-author">
+                <div class="luma-testimonial-avatar" style="background:linear-gradient(135deg,var(--brand-300),var(--brand-500));">林</div>
+                <div>
+                  <p class="luma-testimonial-name" style="margin:0;">林婉清</p>
+                  <p class="luma-testimonial-role" style="margin:0;">产品运营总监 · Nova Studio</p>
+                </div>
+              </div>
+            </article>
+            <article class="luma-testimonial-card">
+              <div class="luma-testimonial-stars">
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+              </div>
+              <blockquote class="luma-testimonial-quote" style="margin:0;">
+                “自动化工作流帮我们省掉了每周 8 小时的周报整理工作。工程师终于可以专注写代码，而不是填表格。”
+              </blockquote>
+              <div class="luma-testimonial-author">
+                <div class="luma-testimonial-avatar" style="background:linear-gradient(135deg,var(--chart-3),var(--state-error));">陈</div>
+                <div>
+                  <p class="luma-testimonial-name" style="margin:0;">陈思远</p>
+                  <p class="luma-testimonial-role" style="margin:0;">技术负责人 · Cirrus</p>
+                </div>
+              </div>
+            </article>
+            <article class="luma-testimonial-card">
+              <div class="luma-testimonial-stars">
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+                <i data-lucide="star" style="width:16px;height:16px;color:var(--chart-3);fill:var(--chart-3);"></i>
+              </div>
+              <blockquote class="luma-testimonial-quote" style="margin:0;">
+                “设计资源终于有了一个统一的家。Figma 集成让评审流程丝滑无比，再也不用在 5 个工具间来回复制粘贴了。”
+              </blockquote>
+              <div class="luma-testimonial-author">
+                <div class="luma-testimonial-avatar" style="background:linear-gradient(135deg,var(--chart-4),var(--brand-700));">王</div>
+                <div>
+                  <p class="luma-testimonial-name" style="margin:0;">王沐阳</p>
+                  <p class="luma-testimonial-role" style="margin:0;">设计主管 · Bright Labs</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ FAQ ============ -->
+      <section id="faq" class="luma-section" style="background:var(--background-100);">
+        <div class="luma-container">
+          <div style="max-width:40rem;margin:0 0 calc(var(--spacing)*10);">
+            <span class="luma-eyebrow">常见问题</span>
+            <h2 class="luma-h2" style="margin-top:calc(var(--spacing)*3);">你可能想知道的</h2>
+            <p class="luma-subtitle" style="margin-top:calc(var(--spacing)*4);max-width:32rem;">
+              关于试用、安全与迁移的常见疑问。如未覆盖你的问题，欢迎随时联系我们的团队。
+            </p>
+          </div>
+          <div class="luma-faq-list">
+            <div class="luma-faq-item">
+              <h3 class="luma-faq-question" style="margin:0;">Lumina 支持免费试用吗？</h3>
+              <p class="luma-faq-answer" style="margin:0;">
+                是的，所有付费方案均提供 30 天免费试用，无需绑定信用卡。试用期间可体验全部高级功能，到期后可选择适合的方案或降级到免费版。
+              </p>
+            </div>
+            <div class="luma-faq-item">
+              <h3 class="luma-faq-question" style="margin:0;">数据存储在哪里？是否符合合规要求？</h3>
+              <p class="luma-faq-answer" style="margin:0;">
+                数据存储于通过 SOC 2 Type II 认证的数据中心，支持亚太、北美、欧洲多区域部署。我们严格遵守 GDPR、CCPA 等数据保护法规，并提供数据本地化选项。
+              </p>
+            </div>
+            <div class="luma-faq-item">
+              <h3 class="luma-faq-question" style="margin:0;">可以从其他平台迁移数据吗？</h3>
+              <p class="luma-faq-answer" style="margin:0;">
+                支持从 Trello、Asana、Jira、Monday.com 等主流平台一键导入项目与任务数据。企业版客户可获得专属迁移服务支持，确保平滑切换。
+              </p>
+            </div>
+            <div class="luma-faq-item">
+              <h3 class="luma-faq-question" style="margin:0;">如何保障数据安全？</h3>
+              <p class="luma-faq-answer" style="margin:0;">
+                所有数据传输使用 TLS 1.3 加密，存储采用 AES-256 静态加密。支持 SSO 单点登录（SAML 2.0）、SCIM 自动配置用户、细粒度角色权限控制，以及完整的审计日志。
+              </p>
+            </div>
+            <div class="luma-faq-item">
+              <h3 class="luma-faq-question" style="margin:0;">提供技术支持吗？</h3>
+              <p class="luma-faq-answer" style="margin:0;">
+                所有方案均提供邮件与在线工单支持。Pro 方案享受 24 小时工作日响应，Enterprise 方案配备专属客户成功经理与 7×24 小时优先支持，SLA 保障 99.99% 可用性。
+              </p>
+            </div>
+            <div class="luma-faq-item">
+              <h3 class="luma-faq-question" style="margin:0;">可以取消订阅吗？</h3>
+              <p class="luma-faq-answer" style="margin:0;">
+                可以随时取消订阅，无需额外费用。取消后当前计费周期内仍可正常使用，到期后自动降级到免费版，数据保留 90 天。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 8. FINAL CTA ============ -->
+      <section id="cta" class="luma-section" style="background:linear-gradient(180deg, var(--background), var(--accent));">
+        <div class="luma-container">
+          <div style="text-align:center;max-width:40rem;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:calc(var(--spacing)*6);">
+            <span class="luma-eyebrow">立即开始</span>
+            <h2 class="luma-h2">准备好提升团队效率了吗？</h2>
+            <p class="luma-subtitle" style="max-width:32rem;">
+              30 天免费试用，无需信用卡。几分钟内即可让团队上手，感受顺滑的协作体验。
+            </p>
+            <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:calc(var(--spacing)*3);">
+              <a href="#" class="luma-btn luma-btn-primary-lg" data-dom-id="cta-trial-final">免费试用 30 天</a>
+              <a href="#" class="luma-btn luma-btn-secondary" data-dom-id="cta-demo-final">预约演示</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 9. FOOTER ============ -->
+      <footer id="about" class="luma-footer" style="padding-top:5rem;padding-bottom:2.5rem;">
+        <div class="luma-container">
+          <div style="display:grid;grid-template-columns:1fr;gap:calc(var(--spacing)*8);" class="luma-footer-grid">
+            <!-- Brand column -->
+            <div style="display:flex;flex-direction:column;gap:calc(var(--spacing)*3);">
+              <span class="luma-brand-text">Lumina</span>
+              <p style="font-size:13px;color:var(--muted-foreground);line-height:1.5;max-width:16rem;margin:0;">
+                智能工作平台，让团队协作如丝般顺滑。
+              </p>
+            </div>
+            <!-- 产品 -->
+            <div style="display:flex;flex-direction:column;gap:calc(var(--spacing)*1);">
+              <h4 style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--foreground);margin:0 0 calc(var(--spacing)*2);">产品</h4>
+              <a href="#features" class="luma-footer-link" data-dom-id="footer-features">产品功能</a>
+              <a href="#showcase" class="luma-footer-link" data-dom-id="footer-showcase">解决方案</a>
+              <a href="#pricing" class="luma-footer-link" data-dom-id="footer-pricing">定价方案</a>
+              <a href="#" class="luma-footer-link" data-dom-id="footer-integrations">集成市场</a>
+            </div>
+            <!-- 公司 -->
+            <div style="display:flex;flex-direction:column;gap:calc(var(--spacing)*1);">
+              <h4 style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--foreground);margin:0 0 calc(var(--spacing)*2);">公司</h4>
+              <a href="#" class="luma-footer-link" data-dom-id="footer-about">关于我们</a>
+              <a href="#" class="luma-footer-link" data-dom-id="footer-careers">招贤纳士</a>
+              <a href="#" class="luma-footer-link" data-dom-id="footer-blog">博客</a>
+              <a href="#" class="luma-footer-link" data-dom-id="footer-contact">联系我们</a>
+            </div>
+            <!-- 资源 -->
+            <div style="display:flex;flex-direction:column;gap:calc(var(--spacing)*1);">
+              <h4 style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--foreground);margin:0 0 calc(var(--spacing)*2);">资源</h4>
+              <a href="#" class="luma-footer-link" data-dom-id="footer-docs">帮助文档</a>
+              <a href="#" class="luma-footer-link" data-dom-id="footer-api">开发者 API</a>
+              <a href="#" class="luma-footer-link" data-dom-id="footer-status">系统状态</a>
+              <a href="#" class="luma-footer-link" data-dom-id="footer-security">安全合规</a>
+            </div>
+          </div>
+
+          <div style="margin-top:calc(var(--spacing)*10);padding-top:calc(var(--spacing)*5);border-top:1px solid var(--border);display:flex;flex-direction:column;gap:calc(var(--spacing)*3);align-items:center;justify-content:space-between;" class="luma-footer-bottom">
+            <p style="font-size:12px;color:var(--muted-foreground);margin:0;">© 2026 Lumina Inc. 保留所有权利。</p>
+            <div style="display:flex;gap:calc(var(--spacing)*5);flex-wrap:wrap;justify-content:center;">
+              <a href="#" class="luma-footer-link" style="padding:0;" data-dom-id="footer-privacy">隐私政策</a>
+              <a href="#" class="luma-footer-link" style="padding:0;" data-dom-id="footer-terms">服务条款</a>
+              <a href="#" class="luma-footer-link" style="padding:0;" data-dom-id="footer-cookies">Cookie 设置</a>
+            </div>
+            <div style="display:flex;align-items:center;gap:calc(var(--spacing)*2);font-size:12px;color:var(--muted-foreground);">
+              <i data-lucide="circle-check" style="width:14px;height:14px;color:var(--success);"></i>
+              <span>简体中文</span>
+              <i data-lucide="chevron-down" style="width:14px;height:14px;"></i>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
