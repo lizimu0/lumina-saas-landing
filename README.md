@@ -1,5 +1,9 @@
 # Lumina · 智能工作平台
 
+![GitHub Pages](https://img.shields.io/badge/预览-Live%20Demo-007AFF?style=for-the-badge&logo=github)
+
+[**🚀 点击这里查看实时预览**](https://lizimu0.github.io/lumina-saas-landing/)
+
 Apple-inspired SaaS landing page built with the Apple design system.
 
 ## Tech Stack
