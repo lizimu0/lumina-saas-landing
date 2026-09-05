@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="light">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumina · 智能工作平台</title>
+    <meta name="description" content="Lumina 将项目管理、实时协作与智能分析融为一体，帮助团队专注真正重要的事。">
+    <meta property="og:title" content="Lumina · 智能工作平台">
+    <meta property="og:description" content="Lumina 将项目管理、实时协作与智能分析融为一体，帮助团队专注真正重要的事。">
+    <meta property="og:type" content="website">
     <style id="theme-vars">
 /*
  * Pinguo design tokens
@@ -215,50 +219,23 @@
 :root { --radius-sm: 0.5rem; --radius-md: 0.75rem; --radius-lg: var(--radius); --radius-xl: 1.5rem; --radius-2xl: 2rem; }
 
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
-    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
-    <style type="text/tailwindcss">
-  @theme inline {
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --color-card: var(--card);
-    --color-card-foreground: var(--card-foreground);
-    --color-popover: var(--popover);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-primary: var(--primary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-secondary: var(--secondary);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-muted: var(--muted);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-accent: var(--accent);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-destructive: var(--destructive);
-    --color-destructive-foreground: var(--destructive-foreground);
-    --color-border: var(--border);
-    --color-input: var(--input);
-    --color-ring: var(--ring);
-    --color-chart-1: var(--chart-1);
-    --color-chart-2: var(--chart-2);
-    --color-chart-3: var(--chart-3);
-    --color-chart-4: var(--chart-4);
-    --color-chart-5: var(--chart-5);
-    --color-sidebar: var(--sidebar);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --radius-sm: var(--radius-sm);
-    --radius-md: var(--radius-md);
-    --radius-lg: var(--radius-lg);
-    --radius-xl: var(--radius-xl);
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"
+            integrity="sha384-+8nbzwDAyu5kAjqtR/XKxIgPHQD2TflvbZgeDZn5t3JP+OOogNH1jXnfel8ZAgzS"
+            crossorigin="anonymous"></script>
+    <!-- 原为 @tailwindcss/browser 运行时(仅原型用途):实际只用到 body 三个工具类与两条表格规则,
+         已替换为下方等价原生 CSS,消除约 300KB 运行时编译器与 CDN 单点依赖 -->
+    <style>
+  html { min-height: 100%; }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    min-height: 100vh;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  @layer base {
-    body { background: var(--background); color: var(--foreground); }
-    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
-    th { @apply whitespace-nowrap; }
-  }
+  td, th { overflow-wrap: break-word; word-break: break-all; word-break: auto-phrase; }
+  th { white-space: nowrap; }
     </style>
     <style id="semantic-token-fallback">
       .bg-background { background-color: var(--background); }
@@ -399,7 +376,7 @@
       }
     </style>
 </head>
-<body class="min-h-screen font-sans antialiased">
+<body>
     <main>
       <style>
         /* ===== Base layout ===== */
@@ -430,6 +407,26 @@
         .luma-nav-link:hover { background: var(--secondary); }
         .luma-nav-link:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
         .luma-nav-actions { display: flex; align-items: center; gap: calc(var(--spacing)*2); }
+
+        /* ===== 移动端导航（<768px 时汉堡按钮 + 下拉面板） ===== */
+        .luma-nav-burger {
+          display: none; align-items: center; justify-content: center;
+          width: 36px; height: 36px; border: none; border-radius: 10px;
+          background: transparent; cursor: pointer; color: var(--foreground);
+        }
+        .luma-nav-burger:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+        .luma-nav-mobile {
+          display: none; flex-direction: column; gap: calc(var(--spacing)*1);
+          padding: calc(var(--spacing)*2) 0; border-top: 1px solid var(--border);
+        }
+        .luma-nav-mobile.is-open { display: flex; }
+        @media (max-width: 767.98px) {
+          .luma-nav-links { display: none; }
+          .luma-nav-burger { display: inline-flex; }
+          .luma-nav-inner { flex-wrap: wrap; }
+          .luma-nav-mobile { width: 100%; }
+          .luma-nav-mobile .luma-nav-link { height: 40px; }
+        }
 
         /* ===== Buttons ===== */
         .luma-btn {
@@ -921,6 +918,15 @@
           <div class="luma-nav-actions">
             <a href="#" class="luma-btn luma-btn-text" data-dom-id="nav-login" style="height:32px;font-size:13px;">登录</a>
             <a href="#cta" class="luma-btn luma-btn-sm" data-dom-id="nav-trial">免费试用</a>
+            <button type="button" class="luma-nav-burger" id="nav-burger" aria-expanded="false" aria-controls="nav-mobile" aria-label="打开导航菜单">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="luma-nav-mobile" id="nav-mobile">
+            <a href="#features" class="luma-nav-link">产品功能</a>
+            <a href="#showcase" class="luma-nav-link">解决方案</a>
+            <a href="#pricing" class="luma-nav-link">定价</a>
+            <a href="#about" class="luma-nav-link">关于我们</a>
           </div>
         </div>
       </nav>
@@ -1744,6 +1750,25 @@
         </div>
       </footer>
     </main>
+    <script>
+      // 移动端导航开合;点击链接后收起
+      (function () {
+        var burger = document.getElementById('nav-burger');
+        var panel = document.getElementById('nav-mobile');
+        if (!burger || !panel) return;
+        burger.addEventListener('click', function () {
+          var open = panel.classList.toggle('is-open');
+          burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+          burger.setAttribute('aria-label', open ? '关闭导航菜单' : '打开导航菜单');
+        });
+        panel.addEventListener('click', function (e) {
+          if (e.target && e.target.classList && e.target.classList.contains('luma-nav-link')) {
+            panel.classList.remove('is-open');
+            burger.setAttribute('aria-expanded', 'false');
+          }
+        });
+      })();
+    </script>
     <script>lucide.createIcons();</script>
 </body>
 </html>
